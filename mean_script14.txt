@@ -1,0 +1,17 @@
+data <- read.csv("E:/Article/mohamad/test mean/data.csv")
+
+
+len = dim(data)[2]
+len = floor(len/52)
+
+start_col = 1
+end_col = 52
+
+mean_data = matrix(nrow = dim(data)[1], ncol = len)
+
+for(i in c(1:len)){
+  mean_data[,i] = apply(data[,start_col:end_col], 1, mean, na.action = TRUE)
+  data = data[,start_col:end_col]
+}
+
+write.csv(mean_data,"E:/Article/mohamad/test mean/mean_data.csv", row.names = FALSE)

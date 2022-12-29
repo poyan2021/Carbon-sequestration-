@@ -1,0 +1,31 @@
+
+#install.packages("raster")
+#install.packages("rgdal")
+
+
+library(raster)
+library(rgdal)
+
+
+# set dir
+points = read.csv("C:/Users/3255957011/Desktop/points.csv")
+# set dir
+files_name = list.files(path = "J:/NPP/", pattern=".tif")
+dir = "J:/NPP/"
+######################################
+
+data.im = matrix(nrow = dim(points[1]), ncol = length(files_name))
+
+for(i in c(1:length(files_name))){
+  img.name = files_name[i]
+  img.name2 = paste0(dir,img.name)
+  print(img.name2)
+  r = raster(img.name2)
+  data.im[,i] = extract(r, points)
+}
+rm(i,r,img.name,dir,img.name2)
+##################################################
+# set name and dir
+write.csv(data.im,"C:/Users/3255957011/Desktop/data.csv", row.names = FALSE)
+rm(files_name,points,data.im)
+print("*** Done ***")
