@@ -1,0 +1,28 @@
+
+vhi_data <- read.csv("C:/Users/aban/Desktop/vhi_file_name.csv", sep=";")
+npp_data <- read.csv("C:/Users/aban/Desktop/npp_file_name.csv", sep=";")
+points <- read.csv("C:/Users/aban/Desktop/npp_file_name.csv", sep=";")
+
+corr_res = matrix(nrow = dim(vhi_data)[1], ncol = 2)
+
+
+
+for(i in c(1:dim(vhi_data)[1])){
+  
+  x <- as.numeric(vhi_data[i,])
+  y <- as.numeric(npp_data[i,])
+  
+  res <- cor.test(x,y, method= "pearson")
+  corr_res[i,1] <- as.numeric(res$estimate)
+  corr_res[i,2] <- as.numeric(res$p.value)
+}
+
+f = which(corr_res[,2] <= 0.05)
+
+valid_corr = corr_res[f,]
+valid_points = points[f,]
+
+write.csv(valid_corr,"C:/Users/aban/Desktop/valid_corr.csv", row.names = FALSE)
+write.csv(valid_points,"C:/Users/aban/Desktop/valid_points.csv", row.names = FALSE)
+write.csv(corr_res,"C:/Users/aban/Desktop/corr_res.csv", row.names = FALSE)
+rm(i, x, y, res, f)
